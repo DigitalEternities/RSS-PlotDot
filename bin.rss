@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Read the news in RSS-PlotDot</title>
+    <link>https://digitaleternities.github.io/RSS-PlotDot/</link>
+    <description>Актуальные новости и обновления в RSS-PlotDot</description>
+    <language>ru</language>
+    <lastBuildDate>Mon, 25 May 2026 12:00:00 +0300</lastBuildDate>
+    <ttl>60</ttl>
+
+    <item>
+      <title>Заголовок news-1</ttitle
+      <link>https://digitaleternities.github.io/RSS-PlotDot//news-1.html</link>
+      <description><![CDATA[<p>RSS-PlotDot начал свою работу</p>]]></description>
+      <pubDate>Mon, 25 May 2026 10:00:00 +0300</pubDate>
+      <guid isPermaLink="true">https://digitaleternities.github.io/RSS-PlotDot//news-1.html/guid>
+    </item>
+
+    
+  </channel>
+</rss>
