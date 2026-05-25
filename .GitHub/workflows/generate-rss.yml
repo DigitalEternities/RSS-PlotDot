@@ -1,0 +1,47 @@
+name: Generate RSS
+on:
+  push:
+    paths: ['news.json']
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install feedgen
+      - name: Generate feed.rss
+        run: |
+          python -c "
+          import json, datetime
+          from feedgen.feed import FeedGenerator
+
+          with open('news.json','r',encoding='utf-8') as f: news = json.load(f)
+          fg = FeedGenerator()
+          fg.title('Мой Новостной Канал')
+          fg.link(href='https://YOUR_LOGIN.github.io/REPO_NAME/')
+          fg.description('Автогенерируемый RSS')
+          fg.language('ru')
+          fg.lastBuildDate(datetime.datetime.now(datetime.timezone.utc))
+
+          for n in news:
+              fe = fg.add_entry()
+              fe.title(n['title'])
+              fe.link(href=n['link'])
+              fe.description(n['description'])
+              fe.published(datetime.datetime.strptime(n['date'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=datetime.timezone.utc))
+              fe.guid(n['link'])
+
+          with open('feed.rss','w',encoding='utf-8') as out:
+              out.write(fg.rss_str(pretty=True).decode('utf-8'))
+          "
+      - name: Commit & Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add feed.rss
+          git commit -m "Update feed.rss" || exit 0
+          git push
