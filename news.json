@@ -1,8 +1,8 @@
 [
-  {
-    "title": "Первая новость",
-    "link": "https://digitaleternities.github.io/RSS-PlotDot//news-1.html",
-    "description": "RSS-PlotDot начал свою работу, это первое обновления проекта, который будет развиваться и далее",
-    "date": "2026-05-25 16:43:00"
-  }
+     {
+       "title": "Полный запуск RSS-PlotDot",
+       "link": "https://digitaleternities.github.io/RSS-PlotDot/start",
+       "description": "Проверка автоматической генерации RSS",
+       "date": "2026-05-25 17:50:00"
+     }
 ]
