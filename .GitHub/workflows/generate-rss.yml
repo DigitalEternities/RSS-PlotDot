@@ -34,10 +34,10 @@ jobs:
           echo "=== DEBUG: First 10 lines ==="
           head -n 10 bin.rss || echo "❌ Файл пустой"
 
-      - name: Commit & Push (Force)
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add bin.rss
-          git commit -m "🤖 Force update bin.rss" || echo "⚠️ Нет изменений для коммита"
-          git push origin HEAD:${{ github.ref_name }} || echo "❌ Push заблокирован"
+      - name: Commit & Push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 Auto-update bin.rss"
+          file_pattern: bin.rss
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
