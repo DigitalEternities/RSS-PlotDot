@@ -2,20 +2,20 @@ name: Generate RSS
 
 on:
   push:
-    paths:
-      - 'news.json'
-  workflow_dispatch: # Позволяет запустить вручную из вкладки Actions
+    paths: ['news.json']
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Критично! Разрешает git push через GITHUB_TOKEN
+      contents: write
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Setup Python
@@ -26,13 +26,18 @@ jobs:
       - name: Install feedgen
         run: pip install feedgen
 
-      - name: Generate bin.rss
-        run: python generate_rss.py
+      - name: Generate RSS
+        run: |
+          python generate_rss.py
+          echo "=== DEBUG: File size ==="
+          ls -lh bin.rss || echo "❌ bin.rss НЕ создан!"
+          echo "=== DEBUG: First 10 lines ==="
+          head -n 10 bin.rss || echo "❌ Файл пустой"
 
-      - name: Commit & Push
+      - name: Commit & Push (Force)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add bin.rss
-          git diff --staged --quiet || git commit -m "🤖 Auto-update bin.rss from news.json"
-          git push
+          git commit -m "🤖 Force update bin.rss" || echo "⚠️ Нет изменений для коммита"
+          git push origin HEAD:${{ github.ref_name }} || echo "❌ Push заблокирован"
