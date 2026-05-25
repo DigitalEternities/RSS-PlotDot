@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSS Reader - PlotDot</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --container-bg: #ffffff;
+            --text-color: #333333;
+            --accent-color: #4a90e2;
+            --border-color: #e0e0e0;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-size: 16px;
+        }
+
+        body.dark-theme {
+            --bg-color: #121212;
+            --container-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent-color: #bb86fc;
+            --border-color: #333333;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-main);
+            font-size: var(--font-size);
+            margin: 0;
+            padding: 20px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 15px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        button, select {
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 6px;
+            border: 1px solid var(--accent-color);
+            background: transparent;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .feed-item {
+            margin-bottom: 40px;
+        }
+
+        .feed-item h2 {
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .feed-item .date {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .feed-item p {
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>RSS Лента</h1>
+    
+    <div class="controls">
+        <button onclick="toggleTheme()">Переключить тему</button>
+        <select id="fontSelect" onchange="changeFont(this.value)">
+            <option value="sans-serif">Sans-Serif</option>
+            <option value="serif">Serif</option>
+            <option value="monospace">Monospace</option>
+        </select>
+        <input type="range" min="14" max="24" value="16" oninput="changeSize(this.value)">
+    </div>
+
+    <div id="rss-content">Загрузка ленты...</div>
+</div>
+
+<script>
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+    }
+
+    function changeFont(font) {
+        document.body.style.fontFamily = font;
+        localStorage.setItem('font', font);
+    }
+
+    function changeSize(size) {
+        document.body.style.fontSize = size + 'px';
+        localStorage.setItem('fontSize', size);
+    }
+
+    // Загрузка настроек
+    window.onload = () => {
+        if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
+        if (localStorage.getItem('font')) document.body.style.fontFamily = localStorage.getItem('font');
+        if (localStorage.getItem('fontSize')) document.body.style.fontSize = localStorage.getItem('fontSize') + 'px';
+        loadRSS();
+    };
+
+    async function loadRSS() {
+        try {
+            const response = await fetch('bin.rss');
+            const str = await response.text();
+            const parser = new DOMParser();
+            const xml = parser.parseFromString(str, "text/xml");
+            const items = xml.querySelectorAll("item");
+            
+            let html = '';
+            items.forEach(item => {
+                const title = item.querySelector("title")?.textContent || "Без названия";
+                const desc = item.querySelector("description")?.textContent || "";
+                const pubDate = item.querySelector("pubDate")?.textContent || "";
+                
+                html += `
+                    <div class="feed-item">
+                        <h2>${title}</h2>
+                        <div class="date">${pubDate}</div>
+                        <p>${desc}</p>
+                    </div>
+                `;
+            });
+            document.getElementById('rss-content').innerHTML = html;
+        } catch (e) {
+            document.getElementById('rss-content').innerHTML = "Ошибка загрузки RSS: " + e.message;
+        }
+    }
+</script>
+
+</body>
+</html>
