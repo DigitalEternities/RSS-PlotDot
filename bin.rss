@@ -5,7 +5,7 @@
     <link>https://digitaleternities.github.io/RSS-PlotDot/</link>
     <description>Актуальные новости и обновления в RSS-PlotDot</description>
     <language>ru</language>
-    <lastBuildDate>Mon, 25 May 2026 12:00:00 +0300</lastBuildDate>
+    <lastBuildDate>Mon, 25 May 2026 15:40:00 +0300</lastBuildDate>
     <ttl>60</ttl>
 
     <item>
@@ -21,6 +21,13 @@
       <description><![CDATA[<p>Мы начали свою работу, и полностью адаптировали выпуск новостей. Первые новости появятся через 24 часа после публикации данного поста</p>]]></description>
       <pubDate>Mon, 25 May 2026 18:30:00 +0300</pubDate>
       <guid isPermaLink="true">https://digitaleternities.github.io/RSS-PlotDot/news-1.html</guid>
+    </item>
+    <item>
+      <title>В понедельник после 18 мая, пропал известный стример Иван insider.</title>
+      <link>https://digitaleternities.github.io/RSS-PlotDot/Insider-propal.html</link>
+      <description><![CDATA[<p>В понедельник после 18 мая, пропал известный стример Иван insider, о его пропажи заявил другие стримеры. После приезда в Москву, Иван перестал выходить на связь. Многое предполагают, что это случилось из за нового хобби Ивана - криптовалюта</p>]]></description>
+      <pubDate>20 May 2026 15:45:00 +0300</pubDate>
+      <guid isPermaLink="true">https://digitaleternities.github.io/RSS-PlotDot/Insider-propal.html</guid>
     </item>
 
   </channel>
